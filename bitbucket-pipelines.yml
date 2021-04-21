@@ -1,0 +1,20 @@
+# This is a sample build configuration for JavaScript.
+# Check our guides at https://confluence.atlassian.com/x/14UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: tipotapp/tipo-ui-2-build:latest
+
+pipelines:
+  branches:
+    develop:
+      - step:
+          script:
+                - export AWS_ACCESS_KEY_ID=$TTAUS_DEV_AWS_ACCESS_KEY_ID
+                - export AWS_SECRET_ACCESS_KEY=$TTAUS_DEV_AWS_SECRET_ACCESS_KEY
+                - export AWS_DEFAULT_REGION=$TTAUS_DEV_AWS_DEFAULT_REGION
+                - ls
+                - npm install
+                - ng build
+                - cd dist/tipo-ui-2.0/
+                - aws s3 sync . s3://devnew.tipotapp.com.au
